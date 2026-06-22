@@ -1,0 +1,75 @@
+{{!
+    Template: question_reference
+    Renders the Question Options Reference table in a collapsible card.
+
+    Context:
+        collapseid      string   HTML id for the collapse wrapper.
+        collapsed       boolean  True to start collapsed.
+        collapseclass   string   CSS class for the collapse div ("collapse" or "collapse show").
+        title           string   Card heading string.
+        questionheader  string   "Question" column header string.
+        headers         array    [{letter}] – answer column headers (A, B, C…).
+        rows            array    Question rows:
+            slot        int      Quiz slot number.
+            namehtml    string   Pre-rendered bold name + question text (unescaped).
+            cells       array    Answer cells:
+                text      string   Answer text (escaped).
+                iscorrect boolean  True when this is the correct answer.
+                blank     boolean  True for empty padding cells.
+                label     string   "Correct answer" tooltip string (only when iscorrect).
+}}
+<div class="card mb-4">
+    <div class="card-header">
+        {{#collapsed}}
+        <h5 class="mb-0">
+            <button class="btn btn-link collapsed text-left w-100 p-0"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#{{collapseid}}"
+                    aria-expanded="false"
+                    aria-controls="{{collapseid}}">
+                {{title}}
+            </button>
+        </h5>
+        {{/collapsed}}
+        {{^collapsed}}
+        <h5 class="mb-0">{{title}}</h5>
+        {{/collapsed}}
+    </div>
+    <div class="{{collapseclass}}" id="{{collapseid}}">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered mb-0">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>#</th>
+                            <th>{{questionheader}}</th>
+                            {{#headers}}
+                            <th>{{letter}}</th>
+                            {{/headers}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#rows}}
+                        <tr>
+                            <td>{{slot}}</td>
+                            <td>{{{namehtml}}}</td>
+                            {{#cells}}
+                            <td>
+                                {{#iscorrect}}
+                                <span class="text-success font-weight-bold" title="{{label}}">{{{text}}}</span>
+                                {{/iscorrect}}
+                                {{^iscorrect}}
+                                {{#blank}}<span class="text-muted">{{text}}</span>{{/blank}}
+                                {{^blank}}{{{text}}}{{/blank}}
+                                {{/iscorrect}}
+                            </td>
+                            {{/cells}}
+                        </tr>
+                        {{/rows}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

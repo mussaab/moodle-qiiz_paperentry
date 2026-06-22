@@ -1,0 +1,24 @@
+{{!
+    Template: shuffle_warning
+    Render an alert listing questions that have shuffle answers enabled.
+
+    Context:
+        editurl   string  URL to the quiz edit page.
+        shuffled  array   [{text}] – pre-formatted question label strings.
+}}
+<div class="alert alert-danger" role="alert">
+    <h5>
+        {{#pix}} i/warning, core {{/pix}}
+        {{#str}} shufflewarning_title, quiz_paperentry {{/str}}
+    </h5>
+    <p>{{#str}} shufflewarning_intro, quiz_paperentry {{/str}}</p>
+    <ul>
+        {{#shuffled}}
+        <li>{{text}}</li>
+        {{/shuffled}}
+    </ul>
+    <a href="{{{editurl}}}" class="btn btn-warning btn-sm" target="_blank" rel="noreferrer">
+        {{#pix}} t/edit, core {{/pix}}
+        {{#str}} shufflewarning_link, quiz_paperentry {{/str}}
+    </a>
+</div>

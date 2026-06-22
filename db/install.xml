@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/quiz/report/paperentry/db" VERSION="20260616"
+       COMMENT="XMLDB file for quiz_paperentry">
+  <TABLES>
+    <TABLE NAME="quiz_paperentry_attempts"
+           COMMENT="Tracks quiz attempts created by the Paper Entry import. Only these are replaced on re-import.">
+      <FIELDS>
+        <FIELD NAME="id"          TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="attemptid"   TYPE="int"  LENGTH="10" NOTNULL="true"
+               COMMENT="quiz_attempts.id of the attempt this plugin created"/>
+        <FIELD NAME="quizid"      TYPE="int"  LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="userid"      TYPE="int"  LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="timecreated" TYPE="int"  LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary"      TYPE="primary" FIELDS="id"/>
+        <KEY NAME="attemptid"    TYPE="unique"  FIELDS="attemptid"/>
+        <KEY NAME="quizid_fk"    TYPE="foreign" FIELDS="quizid"    REFTABLE="quiz"          REFFIELDS="id"/>
+        <KEY NAME="userid_fk"    TYPE="foreign" FIELDS="userid"    REFTABLE="user"          REFFIELDS="id"/>
+        <KEY NAME="attemptid_fk" TYPE="foreign" FIELDS="attemptid" REFTABLE="quiz_attempts" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="quizid"        UNIQUE="false" FIELDS="quizid"/>
+        <INDEX NAME="userid"        UNIQUE="false" FIELDS="userid"/>
+        <INDEX NAME="quizid-userid" UNIQUE="false" FIELDS="quizid, userid"/>
+      </INDEXES>
+    </TABLE>
+
+    <TABLE NAME="quiz_paperentry_settings"
+           COMMENT="Per-quiz configuration for the Paper Entry plugin, including extra profile fields for export.">
+      <FIELDS>
+        <FIELD NAME="id"           TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="quizid"       TYPE="int"  LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="extrafields"  TYPE="text"             NOTNULL="false"
+               COMMENT="JSON array of extra profile field keys to include in the exported CSV"/>
+        <FIELD NAME="remappings"   TYPE="text"             NOTNULL="false"
+               COMMENT="JSON object of default value substitutions: {&quot;from&quot;: &quot;to&quot;, ...}"/>
+        <FIELD NAME="timecreated"  TYPE="int"  LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="timemodified" TYPE="int"  LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary"   TYPE="primary" FIELDS="id"/>
+        <KEY NAME="quizid"    TYPE="unique"  FIELDS="quizid"/>
+        <KEY NAME="quizid_fk" TYPE="foreign" FIELDS="quizid" REFTABLE="quiz" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+
+    <TABLE NAME="quiz_paperentry_graders"
+           COMMENT="Users who are designated graders for a specific quiz.">
+      <FIELDS>
+        <FIELD NAME="id"          TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="quizid"      TYPE="int"  LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="userid"      TYPE="int"  LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="timecreated" TYPE="int"  LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary"   TYPE="primary" FIELDS="id"/>
+        <KEY NAME="quizid_fk" TYPE="foreign" FIELDS="quizid" REFTABLE="quiz" REFFIELDS="id"/>
+        <KEY NAME="userid_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="quizid"        UNIQUE="false" FIELDS="quizid"/>
+        <INDEX NAME="userid"        UNIQUE="false" FIELDS="userid"/>
+        <INDEX NAME="quizid-userid" UNIQUE="true"  FIELDS="quizid, userid"/>
+      </INDEXES>
+    </TABLE>
+
+    <TABLE NAME="quiz_paperentry_submissions"
+           COMMENT="Tracks grader CSV submissions for a specific quiz. File content is stored via the Moodle File API (component=quiz_paperentry, filearea=submission, itemid=userid).">
+      <FIELDS>
+        <FIELD NAME="id"           TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="quizid"       TYPE="int"  LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="userid"       TYPE="int"  LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="timecreated"  TYPE="int"  LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="timemodified" TYPE="int"  LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary"   TYPE="primary" FIELDS="id"/>
+        <KEY NAME="quizid_fk" TYPE="foreign" FIELDS="quizid" REFTABLE="quiz" REFFIELDS="id"/>
+        <KEY NAME="userid_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="quizid"        UNIQUE="false" FIELDS="quizid"/>
+        <INDEX NAME="userid"        UNIQUE="false" FIELDS="userid"/>
+        <INDEX NAME="quizid-userid" UNIQUE="true"  FIELDS="quizid, userid"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

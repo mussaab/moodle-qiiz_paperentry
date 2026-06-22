@@ -1,0 +1,36 @@
+{{!
+    Template: import_results
+    Render import result notifications after a CSV import.
+
+    Context:
+        errors      array    [{message}] – fatal error strings.
+        imported    int      Number of successfully imported attempts.
+        importedmsg string   Pre-formatted success message (only set when imported > 0).
+        hasimported boolean  True when imported > 0.
+        skipped     int      Number of skipped rows.
+        skippedmsg  string   Pre-formatted skipped message (only set when skipped > 0).
+        hasskipped  boolean  True when skipped > 0.
+        warnings    array    [{message}] – per-row warning strings.
+        haswarnings boolean  True when warnings is non-empty.
+}}
+<h4>{{#str}} importresults, quiz_paperentry {{/str}}</h4>
+
+{{#errors}}
+<div class="alert alert-danger" role="alert">{{message}}</div>
+{{/errors}}
+
+{{#hasimported}}
+<div class="alert alert-success" role="alert">{{{importedmsg}}}</div>
+{{/hasimported}}
+
+{{#hasskipped}}
+<div class="alert alert-warning" role="alert">{{{skippedmsg}}}</div>
+{{/hasskipped}}
+
+{{#haswarnings}}
+<ul class="list-unstyled mt-2">
+    {{#warnings}}
+    <li><small class="text-muted">{{message}}</small></li>
+    {{/warnings}}
+</ul>
+{{/haswarnings}}
