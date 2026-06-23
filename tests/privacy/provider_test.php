@@ -31,14 +31,12 @@ use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
 use core_privacy\tests\provider_testcase;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Tests for \quiz_paperentry\privacy\provider.
  *
  * @covers \quiz_paperentry\privacy\provider
  */
-class provider_test extends provider_testcase {
+final class provider_test extends provider_testcase {
 
     /** @var \stdClass Course shared across tests. */
     private \stdClass $course;
@@ -112,9 +110,7 @@ class provider_test extends provider_testcase {
         ]);
     }
 
-    // -----------------------------------------------------------------------
-    // get_contexts_for_userid
-    // -----------------------------------------------------------------------
+    // Tests for get_contexts_for_userid.
 
     /**
      * get_contexts_for_userid() must return the module context for a grader.
@@ -137,9 +133,7 @@ class provider_test extends provider_testcase {
             'Module context must be returned for a student with a tracked attempt');
     }
 
-    // -----------------------------------------------------------------------
-    // get_users_in_context
-    // -----------------------------------------------------------------------
+    // Tests for get_users_in_context.
 
     /**
      * get_users_in_context() must list both the grader and the student.
@@ -153,9 +147,7 @@ class provider_test extends provider_testcase {
         $this->assertContains($this->student->id, $userids, 'Student must appear in userlist');
     }
 
-    // -----------------------------------------------------------------------
-    // delete_data_for_all_users_in_context
-    // -----------------------------------------------------------------------
+    // Tests for delete_data_for_all_users_in_context.
 
     /**
      * delete_data_for_all_users_in_context() must wipe all plugin rows for that context.
@@ -173,9 +165,7 @@ class provider_test extends provider_testcase {
             $DB->count_records('quiz_paperentry_attempts', ['quizid' => $this->quiz->id]));
     }
 
-    // -----------------------------------------------------------------------
-    // delete_data_for_user
-    // -----------------------------------------------------------------------
+    // Tests for delete_data_for_user.
 
     /**
      * delete_data_for_user() must remove only the target user's data.
@@ -203,9 +193,7 @@ class provider_test extends provider_testcase {
             'Other user data must not be affected');
     }
 
-    // -----------------------------------------------------------------------
-    // delete_data_for_users
-    // -----------------------------------------------------------------------
+    // Tests for delete_data_for_users.
 
     /**
      * delete_data_for_users() (bulk) must remove exactly the listed users.

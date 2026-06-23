@@ -25,14 +25,12 @@
 
 namespace quiz_paperentry;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Tests for the import class.
  *
  * @covers \quiz_paperentry\import
  */
-class import_test extends \advanced_testcase {
+final class import_test extends \advanced_testcase {
 
     /** @var \stdClass Course used across tests. */
     private \stdClass $course;
@@ -132,7 +130,7 @@ class import_test extends \advanced_testcase {
         $values[count($values) - 1] = 'INVALID_OPTION_XYZ';
         $row = implode(',', [$student->id, $student->firstname, $student->lastname, ...$values]);
 
-        $attemptsBefore = $DB->count_records('quiz_attempts', ['quiz' => $this->quiz->id]);
+        $attemptsbefore = $DB->count_records('quiz_attempts', ['quiz' => $this->quiz->id]);
 
         $file = $this->csv_to_tempfile($header . "\n" . $row . "\n");
         $result = $importer->process($file);
@@ -143,8 +141,8 @@ class import_test extends \advanced_testcase {
         $this->assertEquals(0, $importer->imported);
 
         // Crucially, no new attempts must have been written to the DB.
-        $attemptsAfter = $DB->count_records('quiz_attempts', ['quiz' => $this->quiz->id]);
-        $this->assertEquals($attemptsBefore, $attemptsAfter,
+        $attemptsafter = $DB->count_records('quiz_attempts', ['quiz' => $this->quiz->id]);
+        $this->assertEquals($attemptsbefore, $attemptsafter,
             'No attempts should be committed when validation fails');
     }
 
@@ -212,7 +210,7 @@ class import_test extends \advanced_testcase {
         $imp1->process($file);
         unlink($file);
 
-        $countAfterFirst = $DB->count_records('quiz_attempts',
+        $countafterfirst = $DB->count_records('quiz_attempts',
             ['quiz' => $this->quiz->id, 'userid' => $student->id]);
 
         $imp2 = new import($this->quiz, $this->cm, $this->course);
@@ -220,10 +218,10 @@ class import_test extends \advanced_testcase {
         $imp2->process($file);
         unlink($file);
 
-        $countAfterSecond = $DB->count_records('quiz_attempts',
+        $countaftersecond = $DB->count_records('quiz_attempts',
             ['quiz' => $this->quiz->id, 'userid' => $student->id]);
 
-        $this->assertEquals($countAfterFirst, $countAfterSecond,
+        $this->assertEquals($countafterfirst, $countaftersecond,
             'Re-importing should replace the attempt, not add a second one');
     }
 }

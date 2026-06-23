@@ -25,14 +25,12 @@
 
 namespace quiz_paperentry;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Tests for the export class.
  *
  * @covers \quiz_paperentry\export
  */
-class export_test extends \advanced_testcase {
+final class export_test extends \advanced_testcase {
 
     /**
      * csv_safe() must prefix formula-trigger characters.

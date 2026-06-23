@@ -168,7 +168,7 @@ class import {
             $this->colmap[$col] = $i;
         }
 
-        // --- Pass 1: validate every row, collect pending attempts. ---
+        // Pass 1: validate every row, collect pending attempts.
         $pending = []; // Each entry: ['userid' => int, 'answers' => array].
         $rownum  = 1;
         while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
@@ -181,12 +181,12 @@ class import {
         }
         fclose($handle);
 
-        // --- Abort if any validation error was recorded. ---
+        // Abort if any validation error was recorded.
         if (!empty($this->errors)) {
             return false;
         }
 
-        // --- Pass 2: commit all validated attempts. ---
+        // Pass 2: commit all validated attempts.
         foreach ($pending as $item) {
             try {
                 $this->create_attempt($item['userid'], $item['answers']);
