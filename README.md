@@ -5,7 +5,7 @@ exam. Afterwards, a manager (or assigned graders) exports a grading sheet,
 fills it in with the students' answers from the collected papers, then imports it to
 automatically create graded quiz attempts in Moodle.
 
-📖 **Full documentation:** https://mussaab.io/moodle-quiz-paperentry/
+📖 **Full documentation:** [https://mussaab.io/moodle-quiz-paperentry-docs/](https://mussaab.github.io/moodle-quiz-paperentry-docs/)
 
 ---
 
